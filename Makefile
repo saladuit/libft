@@ -1,41 +1,57 @@
 # **************************************************************************** #
 #                                                                              #
-#                                                         ::::::::             #
-#    Makefile                                           :+:    :+:             #
-#                                                      +:+                     #
-#    By: saladin <saladin@student.codam.nl>           +#+                      #
-#                                                    +#+                       #
-#    Created: 2020/11/03 16:48:59 by saladin       #+#    #+#                  #
-#    Updated: 2021/01/14 18:24:07 by saladin       ########   odam.nl          #
+#                                                     .--.  _                  #
+#    Makefile                                        |o_o || |                 #
+#                                                    |:_/ || |_ _   ___  __    #
+#    By: safoh <safoh@student.codam.nl>             //   \ \ __| | | \ \/ /    #
+#                                                  (|     | )|_| |_| |>  <     #
+#    Created: 2022/02/09 17:06:29 by safoh        /'\_   _/`\__|\__,_/_/\_\    #
+#    Updated: 2022/07/16 20:43:00 by safoh        \___)=(___/                  #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = libft.a
-OBJ_FILES = ft_memset.o ft_bzero.o ft_memcpy.o ft_memccpy.o ft_memmove.o  \
-		ft_memcmp.o ft_strlen.o ft_strlcpy.o ft_strlcat.o ft_strchr.o \
-		ft_strrchr.o ft_strnstr.o ft_strncmp.o ft_atoi.o  ft_isalpha.o \
-		ft_isdigit.o ft_isalnum.o ft_isascii.o ft_isprint.o ft_toupper.o \
-		ft_tolower.o  ft_putchar_fd.o ft_putstr_fd.o ft_putendl_fd.o  \
-		ft_strdup.o ft_substr.o ft_strjoin.o  ft_strtrim.o ft_split.o  \
-		ft_putnbr_fd.o ft_calloc.o ft_memchr.o ft_strmapi.o ft_itoa.o
-HEADER_FILES = libft.h
-CC = gcc
-CFLAGS = -Wall -Wextra -Werror
+include makerc/colours.mk
+include makerc/libft.mk
 
+################################################################################
+NAME			=libft.a
+
+CC				:=gcc
+RM				:=rm -rf
+CFLAGS			=-Wall -Wextra -Werror$(if $(DEBUG), -g -fsanitize=address)\
+				 $(if $(MALLOC), -g)
+
+SRC_DIR 		:=./src
+BUILD_DIR		:=./build
+OBJS			=$(addprefix $(BUILD_DIR)/, $(SRCS:%.c=%.o))
+HEADERS			=include/libft.h
+INCLUDE_FLAGS	=$(addprefix -I, $(sort $(dir $(HEADERS))))
+
+################################################################################
 all: $(NAME)
 
-$(NAME): $(OBJ_FILES)
-		ar rc $(NAME) $^
+$(NAME): SHELL :=/bin/bash
 
-%.o: %.c $(HEADER_FILES)
-		$(CC) -c $(CFLAGS) -o $@ $<
+$(NAME): $(OBJS)
+	@ar rc $@ $^
+	@printf "$(BLUE_FG)$(NAME)$(RESET_COLOR) created\n"
 
+$(BUILD_DIR)/%.o: $(SRC_DIR)/%.c $(HEADERS)
+	@mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) $(INCLUDE_FLAGS) -c $< -o $@
+
+################################################################################
 clean:
-		rm -f $(OBJ_FILES)
+	@$(RM) $(OBJS)
 
 fclean: clean
-		rm -f $(NAME)
+	@$(RM) $(NAME) *.a *.dSYM
 
-re: fclean all
+re: all
+	@$(MAKE) fclean
 
-.PHONY: all clean fclean re
+debug:
+	@$(MAKE) DEBUG=1
+
+.PHONY: all clean fclean re debug
+################################################################################
