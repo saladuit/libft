@@ -6,89 +6,75 @@
 /*   By: saladuit <safoh@student.codam.nl>          //   \ \ __| | | \ \/ /   */
 /*                                                 (|     | )|_| |_| |>  <    */
 /*   Created: 2022/07/20 20:15:11 by saladuit     /'\_   _/`\__|\__,_/_/\_\   */
-/*   Updated: 2022/07/20 20:15:16 by saladuit     \___)=(___/                 */
+/*   Updated: 2022/07/20 22:01:48 by saladuit     \___)=(___/                 */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-static int	newline(char **line, char **saved, t_line *data)
+static int			gnl_verify_line(char **stack, char **line)
 {
-	size_t	len;
+	char			*tmp_stack;
+	char			*strchr_stack;
+	int				i;
 
-	len = 0;
-	while ((*saved)[len] != '\n' && (*saved)[len] != '\0')
-		len++;
-	if ((*saved)[len] == '\n')
-	{
-		*line = ft_substr(*saved, 0, len);
-		data->tmp = ft_strdup(&((*saved)[len + 1]));
-		free(*saved);
-		*saved = data->tmp;
-	}
-	else
-	{
-		*line = ft_strdup(*saved);
-		if (*saved != NULL)
-		{
-			free(*saved);
-			*saved = NULL;
-		}
-	}
-	if (!*line)
-		return (-1);
+	i = 0;
+	strchr_stack = *stack;
+	while (strchr_stack[i] != '\n')
+		if (!strchr_stack[i++])
+			return (0);
+	tmp_stack = &strchr_stack[i];
+	*tmp_stack = '\0';
+	*line = ft_strdup(*stack);
+	*stack = ft_strdup(tmp_stack + 1);
 	return (1);
 }
 
-static int	output(int fd, char **line, char **saved, t_line *data)
+static	int			gnl_read_file(int fd, char *heap, char **stack, char **line)
 {
-	if (data->b_read < 0)
-		return (-1);
-	else if (data->b_read == 0 && !ft_strchr(saved[fd], '\n'))
+	int				ret;
+	char			*tmp_stack;
+
+	while ((ret = read(fd, heap, BUFFER_SIZE)) > 0)
 	{
-		*line = ft_strdup(saved[fd]);
-		if (!*line)
+		heap[ret] = '\0';
+		if (*stack)
 		{
-			free(saved[fd]);
-			saved[fd] = NULL;
-			return (-1);
+			tmp_stack = *stack;
+			*stack = ft_strjoin(tmp_stack, heap);
+			free(tmp_stack);
+			tmp_stack = NULL;
 		}
-		if (saved[fd] != NULL)
-		{
-			free(saved[fd]);
-			saved[fd] = NULL;
-		}
-		return (0);
+		else
+			*stack = ft_strdup(heap);
+		if (gnl_verify_line(stack, line))
+			break ;
 	}
-	else
-		return (newline(line, &saved[fd], data));
+	if (ret > 0)
+		return (1);
+	return (ret);
 }
 
 int	get_next_line(int fd, char **line)
 {
 	static char	*saved[FOPEN_MAX] = {NULL};
 	char		buffer[BUFFER_SIZE + 1];
-	t_line		data;
+	int			ret;
 
-	if (fd < 0 || line == NULL || BUFFER_SIZE <= 0)
+	if (!line || (fd < 0 || fd >= FOPEN_MAX) || BUFFER_SIZE <= 0 ||\
+			(read(fd, buffer, BUFFER_SIZE) < 0))
 		return (-1);
-	data.b_read = 1;
-	while (data.b_read && !ft_strchr(saved[fd], '\n'))
+	if (saved[fd])
+		if (gnl_verify_line(&saved[fd], line))
+			return (1);
+	ret = gnl_read_file(fd, buffer, &saved[fd], line);
+	if (ret != 0 || saved[fd] == NULL || saved[fd][0] == '\0')
 	{
-		data.b_read = read(fd, buffer, BUFFER_SIZE);
-		if (data.b_read == -1)
-			return (-1);
-		buffer[data.b_read] = '\0';
-		if (saved[fd] == NULL)
-			saved[fd] = ft_strdup(buffer);
-		else
-		{
-			data.tmp = ft_strjoin(saved[fd], buffer);
-			free(saved[fd]);
-			saved[fd] = data.tmp;
-		}
-		if (!saved[fd])
-			return (-1);
+		if (!ret && *line)
+			*line = NULL;
+		return (ret);
 	}
-	return (output(fd, line, saved, &data));
+	*line = saved[fd];
+	saved[fd] = NULL;
+	return (1);
 }
