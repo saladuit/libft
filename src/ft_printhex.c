@@ -1,18 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                    .--.  _                 */
-/*   ft_bzero.c                                      |o_o || |                */
+/*   ft_printhex.c                                   |o_o || |                */
 /*                                                   |:_/ || |_ _   ___  __   */
-/*   By: safoh <safoh@student.codam.nl>             //   \ \ __| | | \ \/ /   */
+/*   By: saladuit <safoh@student.codam.nl>          //   \ \ __| | | \ \/ /   */
 /*                                                 (|     | )|_| |_| |>  <    */
-/*   Created: 2022/06/23 15:11:38 by safoh        /'\_   _/`\__|\__,_/_/\_\   */
-/*   Updated: 2022/07/20 19:58:51 by saladuit     \___)=(___/                 */
+/*   Created: 2022/07/20 20:17:50 by saladuit     /'\_   _/`\__|\__,_/_/\_\   */
+/*   Updated: 2022/07/20 20:17:53 by saladuit     \___)=(___/                 */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "ft_printf.h"
 #include "libft.h"
 
-void	ft_bzero(void *s, size_t n)
+void	ft_printhex(size_t *len, unsigned int ui)
 {
-	ft_memset(s, 0, n);
+	char	*result;
+
+	result = ft_uitoh(ui);
+	ft_putstr_fd(result, 1);
+	*len += ft_strlen(result);
+	free(result);
+	return ;
 }

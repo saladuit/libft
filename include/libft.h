@@ -6,7 +6,7 @@
 /*   By: safoh <safoh@student.codam.nl>             //   \ \ __| | | \ \/ /   */
 /*                                                 (|     | )|_| |_| |>  <    */
 /*   Created: 2022/06/23 15:15:24 by safoh        /'\_   _/`\__|\__,_/_/\_\   */
-/*   Updated: 2022/07/15 16:39:01 by safoh        \___)=(___/                 */
+/*   Updated: 2022/07/20 19:54:40 by saladuit     \___)=(___/                 */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,10 @@
 # define FT_LONG_MAX 9223372036854775807
 
 //WRITE FUNCTIONS
-void		ft_putchar_fd(char c, int fd);
-void		ft_putendl_fd(char *s, int fd);
+void		ft_putchar_fd(const char c, int fd);
+void		ft_putendl_fd(const char *s, int fd);
 void		ft_putnbr_fd(int n, int fd);
-void		ft_putstr_fd(char *s, int fd);
+void		ft_putstr_fd(const char *s, int fd);
 void		ft_putuint_fd(unsigned int nb, int fd);
 void		ft_put2d_fd(char **s2d, int fd, size_t len);
 void		ft_error(void);

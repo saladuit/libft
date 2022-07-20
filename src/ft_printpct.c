@@ -1,18 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                    .--.  _                 */
-/*   ft_bzero.c                                      |o_o || |                */
+/*   ft_printpct.c                                   |o_o || |                */
 /*                                                   |:_/ || |_ _   ___  __   */
-/*   By: safoh <safoh@student.codam.nl>             //   \ \ __| | | \ \/ /   */
+/*   By: saladuit <safoh@student.codam.nl>          //   \ \ __| | | \ \/ /   */
 /*                                                 (|     | )|_| |_| |>  <    */
-/*   Created: 2022/06/23 15:11:38 by safoh        /'\_   _/`\__|\__,_/_/\_\   */
-/*   Updated: 2022/07/20 19:58:51 by saladuit     \___)=(___/                 */
+/*   Created: 2022/07/20 20:16:24 by saladuit     /'\_   _/`\__|\__,_/_/\_\   */
+/*   Updated: 2022/07/20 20:16:26 by saladuit     \___)=(___/                 */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "ft_printf.h"
 #include "libft.h"
 
-void	ft_bzero(void *s, size_t n)
+void	ft_printpct(size_t *len)
 {
-	ft_memset(s, 0, n);
+	ft_putchar_fd('%', 1);
+	*len += 1;
+	return ;
 }

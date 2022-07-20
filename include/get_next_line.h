@@ -1,0 +1,31 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                    .--.  _                 */
+/*   get_next_line.h                                 |o_o || |                */
+/*                                                   |:_/ || |_ _   ___  __   */
+/*   By: saladuit <safoh@student.codam.nl>          //   \ \ __| | | \ \/ /   */
+/*                                                 (|     | )|_| |_| |>  <    */
+/*   Created: 2022/07/20 20:19:34 by saladuit     /'\_   _/`\__|\__,_/_/\_\   */
+/*   Updated: 2022/07/20 20:27:37 by saladuit     \___)=(___/                 */
+/*                                                                            */
+/* ************************************************************************** */
+
+#ifndef GET_NEXT_LINE_H
+# define GET_NEXT_LINE_H
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 8
+# endif
+# include <libft.h>
+# include <fcntl.h>
+# include <stdio.h>
+
+
+typedef struct s_line
+{
+	ssize_t	b_read;
+	char	*tmp;
+}	t_line;
+
+int		get_next_line(int fd, char **line);
+
+#endif
