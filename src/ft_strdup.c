@@ -6,7 +6,7 @@
 /*   By: safoh <safoh@student.codam.nl>             //   \ \ __| | | \ \/ /   */
 /*                                                 (|     | )|_| |_| |>  <    */
 /*   Created: 2022/06/23 15:11:38 by safoh        /'\_   _/`\__|\__,_/_/\_\   */
-/*   Updated: 2022/07/20 22:05:48 by saladuit     \___)=(___/                 */
+/*   Updated: 2022/07/21 20:18:45 by saladuit     \___)=(___/                 */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,13 @@
 
 char	*ft_strdup(const char *s)
 {
+	size_t	len;
 	char	*p;
 
-	p = (char *)malloc(ft_strlen(s) + 1);
+	len = ft_strlen(s) + 1;
+	p = malloc(len * sizeof(char));
 	if (!p)
 		return (NULL);
-	ft_memcpy(p, s, (ft_strlen((char *)s) + 1) * sizeof(char));
-	return (p);
+	ft_memcpy(p, s, len);
+	return ((char *)p);
 }
