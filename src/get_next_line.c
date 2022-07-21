@@ -6,48 +6,48 @@
 /*   By: saladuit <safoh@student.codam.nl>          //   \ \ __| | | \ \/ /   */
 /*                                                 (|     | )|_| |_| |>  <    */
 /*   Created: 2022/07/20 20:15:11 by saladuit     /'\_   _/`\__|\__,_/_/\_\   */
-/*   Updated: 2022/07/20 22:01:48 by saladuit     \___)=(___/                 */
+/*   Updated: 2022/07/21 23:51:49 by saladuit     \___)=(___/                 */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-static int			gnl_verify_line(char **stack, char **line)
+static int			search_and_save(char **saved, char **line)
 {
-	char			*tmp_stack;
-	char			*strchr_stack;
-	int				i;
-
-	i = 0;
-	strchr_stack = *stack;
-	while (strchr_stack[i] != '\n')
-		if (!strchr_stack[i++])
-			return (0);
-	tmp_stack = &strchr_stack[i];
-	*tmp_stack = '\0';
-	*line = ft_strdup(*stack);
-	*stack = ft_strdup(tmp_stack + 1);
+	char			*tmp;
+	
+	if (!*saved)
+		return (0);
+	tmp = ft_strchr(*saved, '\n');
+	if (*tmp == '\0')
+		return (0);
+	*tmp = '\0';
+	*line = ft_strdup(*saved);
+	*saved = ft_strdup(tmp + 1);
 	return (1);
 }
 
-static	int			gnl_read_file(int fd, char *heap, char **stack, char **line)
+static	int			read_into_buffer(int fd, char *buffer, char **saved, char **line)
 {
-	int				ret;
-	char			*tmp_stack;
+	ssize_t		ret;
+	char		*tmp_saved;
 
-	while ((ret = read(fd, heap, BUFFER_SIZE)) > 0)
+	while (true)
 	{
-		heap[ret] = '\0';
-		if (*stack)
+		ret = read(fd, buffer, BUFFER_SIZE);
+		if (ret < 0)
+			break ;
+		buffer[ret] = '\0';
+		if (*saved)
 		{
-			tmp_stack = *stack;
-			*stack = ft_strjoin(tmp_stack, heap);
-			free(tmp_stack);
-			tmp_stack = NULL;
+			tmp_saved = *saved;
+			*saved = ft_strjoin(tmp_saved, buffer);
+			free(tmp_saved);
+			tmp_saved = NULL;
 		}
 		else
-			*stack = ft_strdup(heap);
-		if (gnl_verify_line(stack, line))
+			*saved = ft_strdup(buffer);
+		if (search_and_save(saved, line))
 			break ;
 	}
 	if (ret > 0)
@@ -59,15 +59,14 @@ int	get_next_line(int fd, char **line)
 {
 	static char	*saved[FOPEN_MAX] = {NULL};
 	char		buffer[BUFFER_SIZE + 1];
-	int			ret;
+	ssize_t			ret;
 
 	if (!line || (fd < 0 || fd >= FOPEN_MAX) || BUFFER_SIZE <= 0 ||\
 			(read(fd, buffer, BUFFER_SIZE) < 0))
 		return (-1);
-	if (saved[fd])
-		if (gnl_verify_line(&saved[fd], line))
-			return (1);
-	ret = gnl_read_file(fd, buffer, &saved[fd], line);
+	if (search_and_save(&saved[fd], line))
+		return (1);
+	ret = read_into_buffer(fd, buffer, &saved[fd], line);
 	if (ret != 0 || saved[fd] == NULL || saved[fd][0] == '\0')
 	{
 		if (!ret && *line)
