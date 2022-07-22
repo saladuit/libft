@@ -6,7 +6,7 @@
 /*   By: safoh <safoh@student.codam.nl>             //   \ \ __| | | \ \/ /   */
 /*                                                 (|     | )|_| |_| |>  <    */
 /*   Created: 2022/07/19 22:23:35 by safoh        /'\_   _/`\__|\__,_/_/\_\   */
-/*   Updated: 2022/07/22 09:11:49 by safoh        \___)=(___/                 */
+/*   Updated: 2022/07/22 11:29:46 by safoh        \___)=(___/                 */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,6 @@ typedef struct s_line
 	char	*tmp;
 }	t_line;
 
-int		get_next_line(int fd, char **line);
+ssize_t		get_next_line(int fd, char **line);
 
 #endif
