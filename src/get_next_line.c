@@ -6,7 +6,7 @@
 /*   By: safoh <safoh@student.codam.nl>             //   \ \ __| | | \ \/ /   */
 /*                                                 (|     | )|_| |_| |>  <    */
 /*   Created: 2022/07/19 16:04:45 by safoh        /'\_   _/`\__|\__,_/_/\_\   */
-/*   Updated: 2022/07/22 16:00:52 by safoh        \___)=(___/                 */
+/*   Updated: 2022/07/22 16:24:06 by safoh        \___)=(___/                 */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,8 @@ STATIC int	search_and_save(char **saved, char **line)
 	if (!tmp)
 		return (0);
 	*tmp = '\0';
-	*line = ft_protected_strdup(*saved, "Search_and_save");
-	*saved = ft_protected_strdup(tmp + 1, "Search_and_save");
+	*line = ft_protected_strdup(*saved, "Search_and_save()");
+	*saved = ft_protected_strdup(tmp + 1, "Search_and_save()");
 	return (1);
 }
 
@@ -65,14 +65,14 @@ STATIC int	read_into_buffer(int fd, char *buffer, char **saved, char **line)
 		if (*saved)
 		{
 			tmp = *saved;
-			*saved = ft_protected_strjoin(tmp, buffer, "Read_into_buffer");
+			*saved = ft_protected_strjoin(tmp, buffer, "Read_into_buffer()");
 			if (!*saved)
 				ft_merror("Search_and_save()");
 			free(tmp);
 			tmp = NULL;
 		}
 		else
-			*saved = ft_protected_strdup(buffer, "Read_into_buffer");
+			*saved = ft_protected_strdup(buffer, "Read_into_buffer()");
 		if (search_and_save(saved, line))
 			break ;
 	}
