@@ -6,7 +6,7 @@
 /*   By: safoh <safoh@student.codam.nl>             //   \ \ __| | | \ \/ /   */
 /*                                                 (|     | )|_| |_| |>  <    */
 /*   Created: 2022/06/23 15:15:24 by safoh        /'\_   _/`\__|\__,_/_/\_\   */
-/*   Updated: 2022/07/20 19:54:40 by saladuit     \___)=(___/                 */
+/*   Updated: 2022/07/22 16:02:00 by safoh        \___)=(___/                 */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ void		ft_putstr_fd(const char *s, int fd);
 void		ft_putuint_fd(unsigned int nb, int fd);
 void		ft_put2d_fd(char **s2d, int fd, size_t len);
 void		ft_error(void);
+void		ft_merror(const char *function_name);
 
 //CHECK FUNCTIONS
 bool		ft_isalnum(int c);

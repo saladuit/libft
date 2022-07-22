@@ -6,7 +6,7 @@
 /*   By: safoh <safoh@student.codam.nl>             //   \ \ __| | | \ \/ /   */
 /*                                                 (|     | )|_| |_| |>  <    */
 /*   Created: 2022/07/19 16:04:45 by safoh        /'\_   _/`\__|\__,_/_/\_\   */
-/*   Updated: 2022/07/22 13:07:35 by safoh        \___)=(___/                 */
+/*   Updated: 2022/07/22 16:00:52 by safoh        \___)=(___/                 */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,26 @@
 # define STATIC
 #endif
 
+char	*ft_protected_strdup(const char *s, const char *function_name)
+{
+	char *d;
+
+	d = ft_strdup(s);
+	if (!d)
+		ft_merror(function_name);
+	return (d);
+}
+
+char	*ft_protected_strjoin(const char *s1, const char *s2, const char *function_name)
+{
+	char *d;
+
+	d = ft_strjoin(s1, s2);
+	if (!d)
+		ft_merror(function_name);
+	return (d);
+}
+	
 STATIC int	search_and_save(char **saved, char **line)
 {
 	char			*tmp;
@@ -27,8 +47,8 @@ STATIC int	search_and_save(char **saved, char **line)
 	if (!tmp)
 		return (0);
 	*tmp = '\0';
-	*line = ft_strdup(*saved);
-	*saved = ft_strdup(tmp + 1);
+	*line = ft_protected_strdup(*saved, "Search_and_save");
+	*saved = ft_protected_strdup(tmp + 1, "Search_and_save");
 	return (1);
 }
 
@@ -45,17 +65,17 @@ STATIC int	read_into_buffer(int fd, char *buffer, char **saved, char **line)
 		if (*saved)
 		{
 			tmp = *saved;
-			*saved = ft_strjoin(tmp, buffer);
+			*saved = ft_protected_strjoin(tmp, buffer, "Read_into_buffer");
+			if (!*saved)
+				ft_merror("Search_and_save()");
 			free(tmp);
 			tmp = NULL;
 		}
 		else
-			*saved = ft_strdup(buffer);
+			*saved = ft_protected_strdup(buffer, "Read_into_buffer");
 		if (search_and_save(saved, line))
 			break ;
 	}
-	if (ret > 0)
-		return (1);
 	return (ret);
 }
 
@@ -70,6 +90,7 @@ ssize_t	get_next_line(int fd, char **line)
 	if (saved[fd])
 		if (search_and_save(&saved[fd], line))
 			return (1);
+	buffer[BUFFER_SIZE] = '\0';
 	ret = read_into_buffer(fd, buffer, &saved[fd], line);
 	if (ret != 0 || saved[fd] == NULL || saved[fd][0] == '\0')
 	{

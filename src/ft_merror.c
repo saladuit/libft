@@ -1,30 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                    .--.  _                 */
-/*   get_next_line.h                                 |o_o || |                */
+/*   ft_merror.c                                     |o_o || |                */
 /*                                                   |:_/ || |_ _   ___  __   */
 /*   By: safoh <safoh@student.codam.nl>             //   \ \ __| | | \ \/ /   */
 /*                                                 (|     | )|_| |_| |>  <    */
-/*   Created: 2022/07/19 22:23:35 by safoh        /'\_   _/`\__|\__,_/_/\_\   */
-/*   Updated: 2022/07/22 15:50:30 by safoh        \___)=(___/                 */
+/*   Created: 2022/07/22 16:02:39 by safoh        /'\_   _/`\__|\__,_/_/\_\   */
+/*   Updated: 2022/07/22 16:03:01 by safoh        \___)=(___/                 */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
-# ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 8
-# endif
-# include "libft.h"
-# include <fcntl.h>
-# include <stdio.h>
+#include "libft.h"
 
-typedef struct s_line
+void	ft_merror(const char *function_name)
 {
-	ssize_t	b_read;
-	char	*tmp;
-}	t_line;
+	ft_error();
+	ft_putendl_fd("Malloc Fail in:", STDERR_FILENO);
+	ft_putendl_fd(function_name, STDERR_FILENO);
+	exit(EXIT_FAILURE);
+}
 
-ssize_t		get_next_line(int fd, char **line);
-
-#endif
