@@ -6,7 +6,7 @@
 /*   By: safoh <safoh@student.codam.nl>             //   \ \ __| | | \ \/ /   */
 /*                                                 (|     | )|_| |_| |>  <    */
 /*   Created: 2022/07/19 16:04:45 by safoh        /'\_   _/`\__|\__,_/_/\_\   */
-/*   Updated: 2022/07/24 10:38:30 by saladuit     \___)=(___/                 */
+/*   Updated: 2022/07/25 22:42:34 by safoh        \___)=(___/                 */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,6 @@ STATIC int	read_into_buffer(int fd, char *buffer, char **saved, char **line)
 		{
 			tmp = *saved;
 			*saved = ft_protected_strjoin(tmp, buffer, "Read_into_buffer()");
-			if (!*saved)
-				ft_merror("Search_and_save()");
 			free(tmp);
 			tmp = NULL;
 		}
