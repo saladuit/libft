@@ -6,43 +6,41 @@
 /*   By: safoh <safoh@student.codam.nl>             //   \ \ __| | | \ \/ /   */
 /*                                                 (|     | )|_| |_| |>  <    */
 /*   Created: 2022/07/19 16:04:45 by safoh        /'\_   _/`\__|\__,_/_/\_\   */
-/*   Updated: 2022/07/26 14:49:11 by safoh        \___)=(___/                 */
+/*   Updated: 2022/07/26 16:51:05 by safoh        \___)=(___/                 */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-
-
 #ifdef DEBUG
 # define STATIC static
-# else
+#else
 # define STATIC
 #endif
 
-char	*ft_protected_strdup(const char *s, const char *function_name)
+char	*ft_protected_strdup(const char *s, const char *fn)
 {
-	char *d;
+	char	*d;
 
 	d = ft_strdup(s);
 	if (!d)
-		ft_merror(function_name);
+		ft_merror(fn);
 	return (d);
 }
 
-char	*ft_protected_strjoin(const char *s1, const char *s2, const char *function_name)
+char	*ft_protected_strjoin(const char *s1, const char *s2, const char *fn)
 {
-	char *d;
+	char	*d;
 
 	d = ft_strjoin(s1, s2);
 	if (!d)
-		ft_merror(function_name);
+		ft_merror(fn);
 	return (d);
 }
-	
+
 STATIC int	search_and_save(char **saved, char **line)
 {
 	char			*tmp;
-	
+
 	tmp = ft_strchr(*saved, '\n');
 	if (!tmp)
 		return (0);
@@ -81,7 +79,7 @@ ssize_t	get_next_line(int fd, char **line)
 {
 	static char	*saved[FOPEN_MAX] = {NULL};
 	char		buffer[BUFFER_SIZE + 1];
-	ssize_t			ret;
+	ssize_t		ret;
 
 	if (!line || (fd < 0 || fd >= FOPEN_MAX) || BUFFER_SIZE <= 0)
 		return (-1);
