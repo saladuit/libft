@@ -6,7 +6,7 @@
 /*   By: safoh <safoh@student.codam.nl>             //   \ \ __| | | \ \/ /   */
 /*                                                 (|     | )|_| |_| |>  <    */
 /*   Created: 2022/06/23 15:11:38 by safoh        /'\_   _/`\__|\__,_/_/\_\   */
-/*   Updated: 2022/07/20 19:58:41 by saladuit     \___)=(___/                 */
+/*   Updated: 2022/07/27 21:14:12 by safoh        \___)=(___/                 */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,11 @@ static size_t	init_atoi(const char *nptr, int *sign)
 	return (len);
 }
 
-int	ft_atoi(const char *nptr)
+int32_t	ft_atoi(const char *nptr)
 {
 	long long	nbr;
 	size_t		i;
-	int			sign;
+	int32_t			sign;
 
 	nbr = 0;
 	sign = 1;
@@ -45,5 +45,5 @@ int	ft_atoi(const char *nptr)
 	}
 	if (nbr * sign < -2147483648 || nbr * sign > 2147483647)
 		return (0);
-	return ((int)nbr * sign);
+	return ((int32_t)nbr * sign);
 }
